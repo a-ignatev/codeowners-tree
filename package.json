@@ -1,0 +1,89 @@
+{
+  "name": "ownershipvisualizer",
+  "displayName": "OwnershipVisualizer",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.82.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "codeownersTeams",
+          "name": "Codeowners Teams"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "codeownersTeams.openGraph",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "codeownersTeams.refreshEntry",
+          "when": "view == codeownersTeams",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "codeownersTeams.downloadGraph",
+          "when": "view == codeownersTeams && viewItem == teamViewItem",
+          "group": "inline"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "codeownersTeams.openGraph",
+        "category": "Custom",
+        "title": "Open Codeowners Graph",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "codeownersTeams.downloadGraph",
+        "category": "Custom",
+        "title": "Download Codeowners Graph",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "codeownersTeams.refreshEntry",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.82.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@types/graphviz": "^0.0.36",
+    "graphviz": "^0.0.9"
+  }
+}
