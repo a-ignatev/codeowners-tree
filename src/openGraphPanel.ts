@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import * as path from "path";
 import { generateGraph } from "./generateGraph";
 
 function getWebviewContent(team: string, p: string) {
@@ -11,6 +12,18 @@ function getWebviewContent(team: string, p: string) {
 </head>
 <body>
    ${p}
+
+  <script>
+    const vscode = acquireVsCodeApi();
+
+    [...document.getElementsByTagName('a')].forEach((element) => {
+      element.onclick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        vscode.postMessage(event.target.parentNode.getAttribute('xlink:href'));
+      }
+    })
+  </script>
 </body>
 </html>`;
 }
@@ -19,10 +32,27 @@ export function openGraphPanel(rootPath: string, team: string) {
   const panel = vscode.window.createWebviewPanel(
     "codeownersTeams.graphPanel",
     team,
-    vscode.ViewColumn.One
+    vscode.ViewColumn.One,
+    { enableScripts: true }
   );
 
-  generateGraph(rootPath, team, (p) => {
-    panel.webview.html = getWebviewContent(team, p);
+  panel.webview.onDidReceiveMessage((href) => {
+    // todo fix "file check"
+    if (!href.includes(".")) {
+      vscode.commands.executeCommand(
+        "revealInExplorer",
+        vscode.Uri.file(path.join(rootPath, href))
+      );
+    } else {
+      vscode.workspace
+        .openTextDocument(path.join(rootPath, href))
+        .then((file) => {
+          vscode.window.showTextDocument(file);
+        });
+    }
+  });
+
+  generateGraph(rootPath, team, (data) => {
+    panel.webview.html = getWebviewContent(team, data);
   });
 }

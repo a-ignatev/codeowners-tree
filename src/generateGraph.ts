@@ -115,13 +115,14 @@ export const generateGraph = (
       fontsize: "10",
       fontname: "monospace",
       tooltip: tooltip,
-      href: `https://github.com/doctolib/doctolib/blob/master${node.name}`,
+      href: node.name,
     };
 
     if (!Object.keys(node.children).length) {
       const nameParts = node.name.split("/");
       const label = nameParts[nameParts.length - 1];
 
+      // todo fix "file check"
       if (label.includes(".")) {
         attrs = {
           ...attrs,
