@@ -65,16 +65,6 @@ export const generateGraph = (
     });
   });
 
-  function isJs(name: string) {
-    if (name.includes("assets/javascript")) {
-      return true;
-    }
-    if (name.includes("packages/@doctolib")) {
-      return true;
-    }
-    return false;
-  }
-
   function compactTree(root: TreeNode) {
     const children = Object.keys(root.children);
 
@@ -107,7 +97,6 @@ export const generateGraph = (
     let attrs = {
       style: "filled",
       label: label,
-      fontcolor: isJs(node.name) ? "#6295E0" : "#E60046",
       shape: "folder",
       fillcolor: "#ffe9a2",
       width: "0",

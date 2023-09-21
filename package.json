@@ -1,15 +1,20 @@
 {
-  "name": "ownershipvisualizer",
-  "displayName": "OwnershipVisualizer",
-  "description": "",
+  "name": "codeowners-tree",
+  "displayName": "CODEOWNERS Tree",
+  "description": "Generate an interactive tree-like graph of code ownership for folders and files in your project. Simplify team collaboration and accountability.",
   "version": "0.0.2",
+  "icon": "resources/icon.png",
+  "publisher": "Andrei Ignatev",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.82.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:**/CODEOWNERS"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "views": {
@@ -29,7 +34,7 @@
       ],
       "view/title": [
         {
-          "command": "codeownersTeams.refreshEntry",
+          "command": "codeownersTeams.refreshEntries",
           "when": "view == codeownersTeams",
           "group": "navigation"
         }
@@ -56,8 +61,8 @@
         "icon": "$(cloud-download)"
       },
       {
-        "command": "codeownersTeams.refreshEntry",
-        "title": "Refresh",
+        "command": "codeownersTeams.refreshEntries",
+        "title": "Refresh Codeowners Teams",
         "icon": "$(refresh)"
       }
     ]
@@ -74,6 +79,7 @@
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
     "@types/vscode": "^1.82.0",
+    "@types/which": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
     "@vscode/test-electron": "^2.3.4",
@@ -84,6 +90,7 @@
   },
   "dependencies": {
     "@types/graphviz": "^0.0.36",
-    "graphviz": "^0.0.9"
+    "graphviz": "^0.0.9",
+    "which": "^4.0.0"
   }
 }

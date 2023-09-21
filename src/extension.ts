@@ -3,8 +3,15 @@ import * as fs from "fs";
 import { CodeownerTeamsProvider, TeamTreeItem } from "./CodeownerTeamsProvider";
 import { openGraphPanel } from "./openGraphPanel";
 import { generateGraph } from "./generateGraph";
+import { isGraphvizInstalled } from "./isGraphvizInstalled";
 
-export function activate(context: vscode.ExtensionContext) {
+function showNoGraphvizMessaage() {
+  vscode.window.showInformationMessage(
+    "Application graphviz need to be installed, please check the README.md"
+  );
+}
+
+export async function activate(context: vscode.ExtensionContext) {
   const rootPath =
     vscode.workspace.workspaceFolders &&
     vscode.workspace.workspaceFolders.length > 0
@@ -16,16 +23,26 @@ export function activate(context: vscode.ExtensionContext) {
     return;
   }
 
+  const isInstalled = await isGraphvizInstalled();
+  if (!isInstalled) {
+    showNoGraphvizMessaage();
+  }
+
   const provider = new CodeownerTeamsProvider(rootPath);
 
   vscode.window.registerTreeDataProvider("codeownersTeams", provider);
-  vscode.commands.registerCommand("codeownersTeams.refreshEntry", () => {
+  vscode.commands.registerCommand("codeownersTeams.refreshEntries", () => {
     provider.refresh();
   });
 
   vscode.commands.registerCommand(
     "codeownersTeams.openGraph",
     (team: string) => {
+      if (!isInstalled) {
+        showNoGraphvizMessaage();
+        return;
+      }
+
       openGraphPanel(rootPath, team);
     }
   );
@@ -33,6 +50,11 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand(
     "codeownersTeams.downloadGraph",
     (item: TeamTreeItem) => {
+      if (!isInstalled) {
+        showNoGraphvizMessaage();
+        return;
+      }
+
       vscode.window
         .showSaveDialog({
           defaultUri: vscode.Uri.file(
