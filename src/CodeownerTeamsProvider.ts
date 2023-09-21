@@ -55,9 +55,11 @@ export class CodeownerTeamsProvider
     });
 
     return Promise.resolve(
-      [...teams.values()].map(
-        (team) => new TeamTreeItem(team, vscode.TreeItemCollapsibleState.None)
-      )
+      [...teams.values()]
+        .map(
+          (team) => new TeamTreeItem(team, vscode.TreeItemCollapsibleState.None)
+        )
+        .sort((a, b) => a.label.localeCompare(b.label))
     );
   }
 }
