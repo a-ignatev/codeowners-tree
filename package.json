@@ -4,7 +4,7 @@
   "description": "Generate an interactive tree-like graph of code ownership for folders and files in your project. Simplify team collaboration and accountability.",
   "version": "0.0.2",
   "icon": "resources/icon.png",
-  "publisher": "Andrei Ignatev",
+  "publisher": "andrei-ignatev",
   "license": "MIT",
   "engines": {
     "vscode": "^1.82.0"
