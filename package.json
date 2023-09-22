@@ -6,6 +6,10 @@
   "icon": "resources/icon.png",
   "publisher": "andrei-ignatev",
   "license": "MIT",
+  "keywords": [
+    "codeowners",
+    "owners"
+  ],
   "engines": {
     "vscode": "^1.82.0"
   },
