@@ -64,8 +64,13 @@ export async function activate(context: vscode.ExtensionContext) {
         })
         .then((fileInfos) => {
           if (fileInfos) {
-            generateGraph(rootPath, item.label, (p) => {
-              fs.writeFileSync(fileInfos.path, new TextEncoder().encode(p));
+            generateGraph({
+              rootPath,
+              team: item.label,
+              addLinks: false,
+              onFinish: (p) => {
+                fs.writeFileSync(fileInfos.path, new TextEncoder().encode(p));
+              },
             });
           }
         });

@@ -27,7 +27,12 @@ export function openGraphPanel(rootPath: string, team: string) {
     }
   });
 
-  generateGraph(rootPath, team, (data) => {
-    panel.webview.html = getWebviewContent(team, data);
+  generateGraph({
+    rootPath,
+    team,
+    addLinks: true,
+    onFinish: (data) => {
+      panel.webview.html = getWebviewContent(team, data);
+    },
   });
 }

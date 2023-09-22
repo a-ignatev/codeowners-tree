@@ -21,11 +21,17 @@ class TreeNode {
   }
 }
 
-export const generateGraph = (
-  rootPath: string,
-  team: string,
-  onFinish: (path: string) => void
-) => {
+export function generateGraph({
+  rootPath,
+  team,
+  addLinks,
+  onFinish,
+}: {
+  rootPath: string;
+  team: string;
+  addLinks: boolean;
+  onFinish: (path: string) => void;
+}) {
   const graph = digraph("CodeOwners");
 
   graph.set("rankdir", "LR");
@@ -104,7 +110,7 @@ export const generateGraph = (
       fontsize: "10",
       fontname: "monospace",
       tooltip: tooltip,
-      href: node.name,
+      ...(addLinks ? { href: node.name } : {}),
     };
 
     if (!Object.keys(node.children).length) {
@@ -137,4 +143,4 @@ export const generateGraph = (
       onFinish(data.toString());
     });
   });
-};
+}
