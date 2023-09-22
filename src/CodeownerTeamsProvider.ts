@@ -48,7 +48,7 @@ export class CodeownerTeamsProvider
         return;
       }
 
-      const [, ...owners] = cleared.split(" ");
+      const [, ...owners] = cleared.split(/\s+/);
       owners.forEach((owner) => {
         teams.add(owner);
       });
