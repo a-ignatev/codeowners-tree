@@ -16,6 +16,10 @@
     "workspaceContains:**/CODEOWNERS"
   ],
   "main": "./out/extension.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/a-ignatev/codeowners-tree.git"
+  },
   "contributes": {
     "views": {
       "explorer": [
