@@ -1,8 +1,8 @@
 {
   "name": "codeowners-tree",
   "displayName": "CODEOWNERS Tree",
-  "description": "Generate an interactive tree-like graph of code ownership for folders and files in your project. Simplify team collaboration and accountability.",
-  "version": "0.0.2",
+  "description": "Generate an interactive tree-like graph of code ownership for folders and files in your project.",
+  "version": "0.0.3",
   "icon": "resources/icon.png",
   "publisher": "andrei-ignatev",
   "license": "MIT",
