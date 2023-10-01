@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.4...v0.0.5) (2023-10-01)
+
+
+### Features
+
+* add paning ([d8d7c73](https://github.com/a-ignatev/codeowners-tree/commit/d8d7c73041f7fcc1a069daf261ffb549a9d519a2))
+* add search ([74e530d](https://github.com/a-ignatev/codeowners-tree/commit/74e530dc17e665f3d0225239d62f485633fc39ee))
+
 ### 0.0.4 (2023-10-01)
 
 
