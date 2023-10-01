@@ -1,5 +1,5 @@
 export function getWebviewContent(team: string, data: string) {
-  return `<!DOCTYPE html>
+  return /*html*/ `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -60,6 +60,7 @@ export function getWebviewContent(team: string, data: string) {
   </div>
 
   <script>
+    // VSCode hyperlinks
     const vscode = acquireVsCodeApi();
 
     [...document.getElementsByTagName('a')].forEach((element) => {
@@ -70,21 +71,7 @@ export function getWebviewContent(team: string, data: string) {
       }
     })
 
-    const svg = document.getElementsByTagName('svg')[0]
-  
-    let scale = 1;
-    svg.setAttribute("transform-origin", "0 0");
-    svg.setAttribute("transform", "scale(" + scale + ")");
-
-    document.addEventListener("wheel", (e) => {
-      if (e.ctrlKey) {
-        scale -= e.deltaY * scale * 0.0005;
-        scale = Math.max(0.2, Math.min(3, scale));
-
-        svg.setAttribute("transform", "scale(" + scale + ")");
-      }
-    });
-
+    // Mouse panning
     let isMouseDown = false
 
     document.addEventListener('mousedown', () => {
@@ -103,6 +90,22 @@ export function getWebviewContent(team: string, data: string) {
       }
     })
 
+    // Graph zoom
+    const svg = document.getElementsByTagName('svg')[0]
+  
+    let scale = 1;
+    svg.setAttribute("transform-origin", "0 0");
+    svg.setAttribute("transform", "scale(" + scale + ")");
+
+    document.addEventListener("wheel", (e) => {
+      if (e.ctrlKey) {
+        scale -= e.deltaY * scale * 0.0005;
+        scale = Math.max(0.2, Math.min(3, scale));
+
+        svg.setAttribute("transform", "scale(" + scale + ")");
+      }
+    });
+
     document.getElementById('zoom-in').addEventListener('click', () => {
       scale += 0.1;
       svg.setAttribute("transform", "scale(" + scale + ")");
@@ -117,13 +120,15 @@ export function getWebviewContent(team: string, data: string) {
       scale -= 0.1;
       svg.setAttribute("transform", "scale(" + scale + ")");
     })
-    
+
+    // Search shortcut
     document.addEventListener('keyup', (e) => {
       if (e.ctrlKey && e.key === "f") {
         document.getElementById('search').focus()
       }
     })
 
+    // Search
     let found = []
     let foundIndex = 0
     let currentHighlight = null
