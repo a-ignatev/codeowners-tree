@@ -8,6 +8,15 @@ export function getWebviewContent(team: string, data: string) {
     <style>
       body {
         background-color: white;
+        cursor: grab;
+      }
+
+      body.grabbed {
+        cursor: grabbing;
+      }
+
+      a {
+        cursor: pointer;
       }
 
       .controls {
@@ -62,6 +71,24 @@ export function getWebviewContent(team: string, data: string) {
         svg.setAttribute("transform", "scale(" + scale + ")");
       }
     });
+
+    let isMouseDown = false
+
+    document.addEventListener('mousedown', () => {
+      document.body.classList.add('grabbed')
+      isMouseDown = true
+    })
+
+    document.addEventListener('mouseup', () => {
+      document.body.classList.remove('grabbed')
+      isMouseDown = false
+    })
+
+    document.addEventListener('mousemove', (e) => {
+      if (isMouseDown) {
+        window.scrollBy(-e.movementX, -e.movementY)
+      }
+    })
 
     document.getElementById('zoom-in').addEventListener('click', () => {
       scale += 0.1;
