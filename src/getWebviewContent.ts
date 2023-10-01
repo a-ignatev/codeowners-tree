@@ -126,33 +126,46 @@ export function getWebviewContent(team: string, data: string) {
 
     let found = []
     let foundIndex = 0
+    let currentHighlight = null
 
     document.getElementById("search").addEventListener("keyup", (e) => {
-      ;[...document.getElementsByClassName('highlight')].forEach(element => element.classList.remove('highlight'))
-
-      if (e.key === "Enter" && found.length > 1) {
-        foundIndex = foundIndex + 1 >= found.length ? 0 : foundIndex + 1
+      if (currentHighlight) {
+        currentHighlight.getElementsByTagName('polygon')[0].classList.remove('highlight')
+        currentHighlight.getElementsByTagName('text')[0].innerHTML = currentHighlight.getElementsByTagName('text')[0].originalText
       }
 
-      if (!e.target.value) {
+      if (e.key === "Enter" && found.length > 1) {
+        if (e.shiftKey) {
+          foundIndex = foundIndex - 1 >= 0 ? foundIndex - 1 : found.length - 1
+        } else {
+          foundIndex = foundIndex + 1 >= found.length ? 0 : foundIndex + 1
+        }
+      }
+
+      const searchValue = e.target.value
+
+      if (!searchValue) {
         document.getElementById('matches-count').innerText = ""
         return
       }
 
       found = [...document.getElementsByTagName('a')].filter((element) => {
-        return element.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+        return element.textContent.toLowerCase().includes(searchValue.toLowerCase())
       })
    
-      const matching = found[foundIndex]
+      currentHighlight = found[foundIndex]
 
-      if (matching) {
+      if (currentHighlight) {
         document.getElementById('matches-count').innerText = (foundIndex + 1) + "/" + found.length
-        matching.scrollIntoView({
-            behavior: 'auto',
+        currentHighlight.scrollIntoView({
+            behavior: 'smooth',
             block: 'center',
-            inline: 'center'
+            inline: 'center',
         })
-        matching.getElementsByTagName('polygon')[0].classList.add('highlight')
+        currentHighlight.getElementsByTagName('polygon')[0].classList.add('highlight')
+        const originalText = currentHighlight.getElementsByTagName('text')[0].innerHTML
+        currentHighlight.getElementsByTagName('text')[0].innerHTML = originalText.replace(new RegExp('(' + searchValue+')', 'ig'), '<tspan fill="red" font-weight="bold">$1</tspan>')
+        currentHighlight.getElementsByTagName('text')[0].originalText = originalText
       } else {
         document.getElementById('matches-count').innerText = ""
       }
