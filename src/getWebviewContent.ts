@@ -27,7 +27,12 @@ export function getWebviewContent(team: string, data: string) {
         display: flex;
         gap: 4px;
         padding: 16px;
-        align-items: center;
+        flex-direction: column;
+      }
+
+      .highlight {
+        stroke: crimson;
+        stroke-width: 2px;
       }
 
       .controls span {
@@ -40,10 +45,18 @@ export function getWebviewContent(team: string, data: string) {
   ${data}
 
   <div class="controls">
-    <button id="zoom-in">+</button>
-    <button id="zoom-reset">O</button>
-    <button id="zoom-out">-</button>
-    <span>Ctrl + Wheel</span>
+    <div>
+      <button id="zoom-in">+</button>
+      <button id="zoom-reset">O</button>
+      <button id="zoom-out">-</button>
+      <span>Ctrl + Wheel</span>
+    </div>
+    <div>
+      <input placeholder="Search" id="search" />
+    </div>
+    <div>
+      <span id="matches-count" />
+    </div>
   </div>
 
   <script>
@@ -103,6 +116,46 @@ export function getWebviewContent(team: string, data: string) {
     document.getElementById('zoom-out').addEventListener('click', () => {
       scale -= 0.1;
       svg.setAttribute("transform", "scale(" + scale + ")");
+    })
+    
+    document.addEventListener('keyup', (e) => {
+      if (e.ctrlKey && e.key === "f") {
+        document.getElementById('search').focus()
+      }
+    })
+
+    let found = []
+    let foundIndex = 0
+
+    document.getElementById("search").addEventListener("keyup", (e) => {
+      ;[...document.getElementsByClassName('highlight')].forEach(element => element.classList.remove('highlight'))
+
+      if (e.key === "Enter" && found.length > 1) {
+        foundIndex = foundIndex + 1 >= found.length ? 0 : foundIndex + 1
+      }
+
+      if (!e.target.value) {
+        document.getElementById('matches-count').innerText = ""
+        return
+      }
+
+      found = [...document.getElementsByTagName('a')].filter((element) => {
+        return element.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+      })
+   
+      const matching = found[foundIndex]
+
+      if (matching) {
+        document.getElementById('matches-count').innerText = (foundIndex + 1) + "/" + found.length
+        matching.scrollIntoView({
+            behavior: 'auto',
+            block: 'center',
+            inline: 'center'
+        })
+        matching.getElementsByTagName('polygon')[0].classList.add('highlight')
+      } else {
+        document.getElementById('matches-count').innerText = ""
+      }
     })
   </script>
 </body>
