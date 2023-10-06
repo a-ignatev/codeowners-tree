@@ -39,10 +39,16 @@ export function getWebviewContent(team: string, data: string) {
         color: #abb2bf;
         margin-left: 4px;
       }
+
+      .graph-content {
+        padding: 100px 24px;
+      }
     </style>
 </head>
 <body>
+  <div class="graph-content">
   ${data}
+  </div>
 
   <div class="controls">
     <div>
