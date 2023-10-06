@@ -9,6 +9,10 @@ import { saveGraphAsFile } from "./saveGraphAsFile";
 export async function activate(context: vscode.ExtensionContext) {
   const workspaceRoot = getWorkspaceRoot();
 
+  const provider = new CodeownerTeamsProvider(workspaceRoot);
+
+  vscode.window.registerTreeDataProvider("codeownersTeams", provider);
+
   if (!workspaceRoot) {
     vscode.window.showInformationMessage("No CODEOWNERS in empty workspace");
     return;
@@ -19,9 +23,6 @@ export async function activate(context: vscode.ExtensionContext) {
     showNoGraphvizMessaage();
   }
 
-  const provider = new CodeownerTeamsProvider(workspaceRoot);
-
-  vscode.window.registerTreeDataProvider("codeownersTeams", provider);
   vscode.commands.registerCommand("codeownersTeams.refreshEntries", () => {
     provider.refresh();
   });

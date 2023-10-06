@@ -6,7 +6,7 @@ import { getCodeownersTeams } from "./helpers/getCodeownersTeams";
 export class CodeownerTeamsProvider
   implements vscode.TreeDataProvider<TeamTreeItem>
 {
-  constructor(private workspaceRoot: string) {}
+  constructor(private workspaceRoot: string | undefined) {}
 
   private _onDidChangeTreeData: vscode.EventEmitter<
     TeamTreeItem | undefined | null | void
@@ -25,7 +25,6 @@ export class CodeownerTeamsProvider
 
   getChildren(): Thenable<TeamTreeItem[]> {
     if (!this.workspaceRoot) {
-      vscode.window.showInformationMessage("No dependency in empty workspace");
       return Promise.resolve([]);
     }
 
