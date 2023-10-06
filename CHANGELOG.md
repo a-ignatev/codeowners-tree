@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.5...v0.0.6) (2023-10-06)
+
+
+### Features
+
+* add info message ([a5d4b1c](https://github.com/a-ignatev/codeowners-tree/commit/a5d4b1c9e83241638f95a3ddb3bbdeeeecad3ed5))
+* improve highlight and search navigation ([d232186](https://github.com/a-ignatev/codeowners-tree/commit/d23218665a40892402ef00e3b78867ba662c3a4b))
+
+
+### Bug Fixes
+
+* add padding to graph ([03e79fb](https://github.com/a-ignatev/codeowners-tree/commit/03e79fb9154443df9f6ec3bdf0feb06447f6fcbd))
+* search through the teams ([ee2491b](https://github.com/a-ignatev/codeowners-tree/commit/ee2491bc079a32dc1b9120fbf81d4251c2bb2dfc))
+
 ### [0.0.5](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.4...v0.0.5) (2023-10-01)
 
 
