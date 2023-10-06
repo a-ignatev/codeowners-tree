@@ -25,7 +25,7 @@ export function openGraphPanel(team: string, workspaceRoot: string) {
   const panel = vscode.window.createWebviewPanel(
     "codeownersTeams.graphPanel",
     team,
-    vscode.ViewColumn.One,
+    { viewColumn: vscode.ViewColumn.One, preserveFocus: true },
     { enableScripts: true }
   );
 
