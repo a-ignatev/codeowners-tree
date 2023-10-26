@@ -66,14 +66,63 @@ export function getWebviewContent(team: string, data: string) {
   </div>
 
   <script>
-    // VSCode hyperlinks
+    // todo move somewhere
+    const folderColor = '#ffe9a2'
+    const folderTooltipId = 'folder-tooltip';
     const vscode = acquireVsCodeApi();
 
+    window.addEventListener('message', event => {
+      const message = event.data;
+      switch (message.command) {
+          case 'receiveDirectoryListing':
+            const tooltip = document.getElementById(folderTooltipId);
+            if (message.content) {
+              tooltip.textContent = message.content;
+            } else {
+              tooltip?.remove();
+            }
+          break;
+      }
+    });
+
     [...document.getElementsByTagName('a')].forEach((element) => {
+      const isFile = element.getElementsByTagName('polygon')[0].getAttribute('fill') !== folderColor;
+
       element.onclick = (event) => {
+        console.log(event)
         event.preventDefault();
         event.stopPropagation();
-        vscode.postMessage(event.target.parentNode.getAttribute('xlink:href'));
+        vscode.postMessage({ command: 'open', href: event.target.parentNode.getAttribute('xlink:href') });
+      }
+
+      if (!isFile) {
+        element.getElementsByTagName('text')[0].style.pointerEvents = 'none';
+
+        element.onmouseover = (event) => {
+          const rect = element.getBoundingClientRect()
+          let tooltip = document.createElement("tooltip");
+          tooltip.id = folderTooltipId;
+          tooltip.textContent = 'Loading...';
+          tooltip.style.position = 'fixed';
+          tooltip.style.left = rect.left + "px";
+          tooltip.style.top = rect.top + 50 + "px";
+          tooltip.style.backgroundColor = folderColor;
+          tooltip.style.border = '1px solid black';
+          tooltip.style.padding = '4px';
+          tooltip.style.borderRadius = '4px';
+          tooltip.style.color = 'black';
+          tooltip.style.whiteSpace = 'pre';
+
+          element.tooltip = tooltip
+
+          document.body.appendChild(tooltip)
+          vscode.postMessage({ command: 'getDirectoryListing', directory: event.target.parentNode.getAttribute('xlink:href') });
+        }
+
+        element.onmouseout = (event) => {
+          element.tooltip?.remove()
+          element.tooltip = undefined
+        }
       }
     })
 
