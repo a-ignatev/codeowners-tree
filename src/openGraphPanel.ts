@@ -39,11 +39,11 @@ function addEventHandlers(panel: vscode.WebviewPanel, workspaceRoot: string) {
         }
 
         const files = content
-          .filter((path) => path.isFile)
+          .filter((path) => path.isFile())
           .map((path) => "🗎 " + path.name)
           .sort();
         const folders = content
-          .filter((path) => path.isDirectory)
+          .filter((path) => path.isDirectory())
           .map((path) => "🗀 " + path.name)
           .sort();
 
