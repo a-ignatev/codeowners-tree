@@ -3,6 +3,8 @@ import * as fs from "fs";
 import * as path from "path";
 import { getCodeownersTeams } from "./helpers/getCodeownersTeams";
 
+const DIVIDER = "---";
+
 export class CodeownerTeamsProvider
   implements vscode.TreeDataProvider<TeamTreeItem>
 {
@@ -27,7 +29,6 @@ export class CodeownerTeamsProvider
     if (!this.workspaceRoot) {
       return Promise.resolve([]);
     }
-
     const codeownersPath = path.join(this.workspaceRoot, "CODEOWNERS");
 
     if (!fs.existsSync(codeownersPath)) {
@@ -35,23 +36,44 @@ export class CodeownerTeamsProvider
       return Promise.resolve([]);
     }
 
+    const configuration = vscode.workspace.getConfiguration("codeownersTeams");
+    const pinnedTeamsInConfig = configuration.get<string[]>("pinnedTeams", []);
+
     const teams = getCodeownersTeams(codeownersPath);
 
-    return Promise.resolve(
-      Array.from(teams)
-        .sort((a, b) => a.localeCompare(b))
-        .map((team) => new TeamTreeItem(team))
-    );
+    const allTeams = Array.from(teams);
+    const pinnedTeams = allTeams
+      .filter((team) => pinnedTeamsInConfig.includes(team))
+      .sort((a, b) => a.localeCompare(b))
+      .map((team) => new TeamTreeItem(team, true));
+
+    const otherTeams = allTeams
+      .filter((team) => !pinnedTeamsInConfig.includes(team))
+      .sort((a, b) => a.localeCompare(b))
+      .map((team) => new TeamTreeItem(team, false));
+
+    let result: TeamTreeItem[] = [];
+    if (pinnedTeams.length) {
+      result = pinnedTeams.concat([new TeamTreeItem(DIVIDER)]);
+    }
+
+    result = result.concat(otherTeams);
+
+    return Promise.resolve(result);
   }
 }
 
 export class TeamTreeItem extends vscode.TreeItem {
-  constructor(public readonly label: string) {
+  constructor(public readonly label: string, isPinned?: boolean) {
     super(label, vscode.TreeItemCollapsibleState.None);
+
+    if (label === DIVIDER) {
+      return;
+    }
 
     this.tooltip = this.label;
     this.iconPath = new vscode.ThemeIcon("shield");
-    this.contextValue = "teamViewItem";
+    this.contextValue = isPinned ? "teamViewItemPinned" : "teamViewItem";
     this.command = {
       title: "Open Codeowners Graph",
       command: "codeownersTeams.openGraph",

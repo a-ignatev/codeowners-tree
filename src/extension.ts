@@ -50,6 +50,52 @@ export async function activate(context: vscode.ExtensionContext) {
       saveGraphAsFile(item, workspaceRoot);
     }
   );
+
+  vscode.commands.registerCommand(
+    "codeownersTeams.pinTeam",
+    (item: TeamTreeItem) => {
+      const configuration =
+        vscode.workspace.getConfiguration("codeownersTeams");
+      const pinnedTeams = configuration.get<string[]>("pinnedTeams", []);
+
+      if (pinnedTeams.includes(item.label)) {
+        return;
+      }
+
+      configuration
+        .update(
+          "pinnedTeams",
+          [...pinnedTeams, item.label],
+          vscode.ConfigurationTarget.Global
+        )
+        .then(() => {
+          provider.refresh();
+        });
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "codeownersTeams.unpinTeam",
+    (item: TeamTreeItem) => {
+      const configuration =
+        vscode.workspace.getConfiguration("codeownersTeams");
+      const pinnedTeams = configuration.get<string[]>("pinnedTeams", []);
+
+      if (!pinnedTeams.includes(item.label)) {
+        return;
+      }
+
+      configuration
+        .update(
+          "pinnedTeams",
+          pinnedTeams.filter((team) => team !== item.label),
+          vscode.ConfigurationTarget.Global
+        )
+        .then(() => {
+          provider.refresh();
+        });
+    }
+  );
 }
 
 export function deactivate() {}

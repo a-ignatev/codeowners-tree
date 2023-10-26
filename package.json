@@ -56,7 +56,17 @@
       "view/item/context": [
         {
           "command": "codeownersTeams.downloadGraph",
+          "when": "view == codeownersTeams && (viewItem == teamViewItem || viewItem == teamViewItemPinned)",
+          "group": "inline"
+        },
+        {
+          "command": "codeownersTeams.pinTeam",
           "when": "view == codeownersTeams && viewItem == teamViewItem",
+          "group": "inline"
+        },
+        {
+          "command": "codeownersTeams.unpinTeam",
+          "when": "view == codeownersTeams && viewItem == teamViewItemPinned",
           "group": "inline"
         }
       ]
@@ -75,11 +85,33 @@
         "icon": "$(cloud-download)"
       },
       {
+        "command": "codeownersTeams.pinTeam",
+        "category": "Custom",
+        "title": "Pin Codeowners Team",
+        "icon": "$(pin)"
+      },
+      {
+        "command": "codeownersTeams.unpinTeam",
+        "category": "Custom",
+        "title": "Unpin Codeowners Team",
+        "icon": "$(pinned)"
+      },
+      {
         "command": "codeownersTeams.refreshEntries",
         "title": "Refresh Codeowners Teams",
         "icon": "$(refresh)"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "CODEOWNERS Tree",
+      "properties": {
+        "codeownersTeams.pinnedTeams": {
+          "type": "array",
+          "default": [],
+          "description": "Pinned CODEOWNERS teams to show at the top."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
