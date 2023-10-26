@@ -230,6 +230,12 @@ export function getWebviewContent(team: string, data: string) {
         document.getElementById('matches-count').innerText = ""
       }
     })
+
+    // scroll to the root of the tree
+    document.getElementById('node1').scrollIntoView({
+      block: 'center',
+      inline: 'center',
+    })
   </script>
 </body>
 </html>`;
