@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.6...v0.0.7) (2023-10-26)
+
+
+### Features
+
+* add a quick view of a folder content ([0971ba3](https://github.com/a-ignatev/codeowners-tree/commit/0971ba36a9c1cac235bfe11e8cddf945c514f2f4))
+* add ability to pin favourite teams ([24edb71](https://github.com/a-ignatev/codeowners-tree/commit/24edb71bd776da2696c4cb527f3db80ef481e4eb))
+* open the tree with the root in view ([5950c36](https://github.com/a-ignatev/codeowners-tree/commit/5950c36c244390d762c6bce731999d9d0fdcaaff))
+
+
+### Bug Fixes
+
+* wrong path checks ([bce845a](https://github.com/a-ignatev/codeowners-tree/commit/bce845a841aecf54487359a9d4675bfda9ecaf0f))
+
 ### [0.0.6](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.5...v0.0.6) (2023-10-06)
 
 
