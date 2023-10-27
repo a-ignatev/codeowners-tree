@@ -5,11 +5,13 @@ import { isGraphvizInstalled } from "./helpers/isGraphvizInstalled";
 import { getWorkspaceRoot } from "./helpers/getWorkspaceRoot";
 import { showNoGraphvizMessaage } from "./helpers/showNoGraphvizMessaage";
 import { saveGraphAsFile } from "./saveGraphAsFile";
+import { CodeownerTeamsPinner } from "./CodeownerTeamsPinner";
 
 export async function activate(context: vscode.ExtensionContext) {
   const workspaceRoot = getWorkspaceRoot();
 
   const provider = new CodeownerTeamsProvider(workspaceRoot);
+  const teamsPinner = new CodeownerTeamsPinner(provider);
 
   vscode.window.registerTreeDataProvider("codeownersTeams", provider);
 
@@ -54,46 +56,14 @@ export async function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand(
     "codeownersTeams.pinTeam",
     (item: TeamTreeItem) => {
-      const configuration =
-        vscode.workspace.getConfiguration("codeownersTeams");
-      const pinnedTeams = configuration.get<string[]>("pinnedTeams", []);
-
-      if (pinnedTeams.includes(item.label)) {
-        return;
-      }
-
-      configuration
-        .update(
-          "pinnedTeams",
-          [...pinnedTeams, item.label],
-          vscode.ConfigurationTarget.Global
-        )
-        .then(() => {
-          provider.refresh();
-        });
+      teamsPinner.pinTeam(item.label);
     }
   );
 
   vscode.commands.registerCommand(
     "codeownersTeams.unpinTeam",
     (item: TeamTreeItem) => {
-      const configuration =
-        vscode.workspace.getConfiguration("codeownersTeams");
-      const pinnedTeams = configuration.get<string[]>("pinnedTeams", []);
-
-      if (!pinnedTeams.includes(item.label)) {
-        return;
-      }
-
-      configuration
-        .update(
-          "pinnedTeams",
-          pinnedTeams.filter((team) => team !== item.label),
-          vscode.ConfigurationTarget.Global
-        )
-        .then(() => {
-          provider.refresh();
-        });
+      teamsPinner.unpinTeam(item.label);
     }
   );
 }
