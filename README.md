@@ -20,23 +20,22 @@ Before using CODEOWNERS Tree, you'll need to install the Graphviz application, w
 
 ### Installing Graphviz on macOS
 
-1. Install Graphviz using Homebrew by running the following command in your terminal:
+Install Graphviz using Homebrew by running the following command in your terminal:
 
-```shell
-brew install graphviz
-```
+`brew install graphviz`
+
 Homebrew will automatically add Graphviz to your system's PATH.
 
 ### Installing Graphviz on Linux (Ubuntu/Debian)
 Open a terminal and run the following command to install Graphviz using the package manager:
 
-```shell
-sudo apt-get install graphviz
-```
+`sudo apt-get install graphviz`
 
-### Getting Started
+## Getting Started
 Once you have Graphviz installed, you can start using CODEOWNERS Tree to generate and visualize ownership hierarchies for your codebase.
 
-The new panel is locataed in the Explorer.
+The new panel is located in the Explorer.
 
-<a href="https://www.buymeacoffee.com/aignatev" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+## Support Further Development
+
+<a href="https://www.buymeacoffee.com/aignatev" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="60" width="217"></a>
