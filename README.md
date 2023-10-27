@@ -38,3 +38,5 @@ sudo apt-get install graphviz
 Once you have Graphviz installed, you can start using CODEOWNERS Tree to generate and visualize ownership hierarchies for your codebase.
 
 The new panel is locataed in the Explorer.
+
+<a href="https://www.buymeacoffee.com/aignatev" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
