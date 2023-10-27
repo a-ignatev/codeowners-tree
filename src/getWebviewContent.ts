@@ -77,7 +77,7 @@ export function getWebviewContent(team: string, data: string) {
           case 'receiveDirectoryListing':
             const tooltip = document.getElementById(folderTooltipId);
             if (message.content) {
-              tooltip.textContent = message.content;
+              tooltip.innerHTML = message.content;
             } else {
               tooltip?.remove();
             }
