@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.7...v0.0.8) (2023-10-27)
+
+
+### Bug Fixes
+
+* icons do not work on mac ([0d9a92e](https://github.com/a-ignatev/codeowners-tree/commit/0d9a92ed31fd9e44b741344724cff2433faadb0e))
+
 ### [0.0.7](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.6...v0.0.7) (2023-10-26)
 
 
