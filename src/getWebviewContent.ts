@@ -145,10 +145,14 @@ export function getWebviewContent(team: string, data: string) {
       }
     })
 
+    document.addEventListener("scroll", (event) => {
+      vscode.setState({ ...(vscode.getState() || {}), windowX: window.scrollX, windowY: window.scrollY })
+    });
+
     // Graph zoom
     const svg = document.getElementsByTagName('svg')[0]
   
-    let scale = 1;
+    let scale = vscode.getState()?.scale || 1;
     svg.setAttribute("transform-origin", "0 0");
     svg.setAttribute("transform", "scale(" + scale + ")");
 
@@ -158,22 +162,26 @@ export function getWebviewContent(team: string, data: string) {
         scale = Math.max(0.2, Math.min(3, scale));
 
         svg.setAttribute("transform", "scale(" + scale + ")");
+        vscode.setState({ ...(vscode.getState() || {}), scale: scale })
       }
     });
 
     document.getElementById('zoom-in').addEventListener('click', () => {
       scale += 0.1;
       svg.setAttribute("transform", "scale(" + scale + ")");
+      vscode.setState({ ...(vscode.getState() || {}), scale: scale })
     })
 
     document.getElementById('zoom-reset').addEventListener('click', () => {
       scale = 1;
       svg.setAttribute("transform", "scale(" + scale + ")");
+      vscode.setState({ ...(vscode.getState() || {}), scale: scale })
     })
 
     document.getElementById('zoom-out').addEventListener('click', () => {
       scale -= 0.1;
       svg.setAttribute("transform", "scale(" + scale + ")");
+      vscode.setState({ ...(vscode.getState() || {}), scale: scale })
     })
 
     // Search shortcut
@@ -231,11 +239,16 @@ export function getWebviewContent(team: string, data: string) {
       }
     })
 
-    // scroll to the root of the tree
-    document.getElementById('node1').scrollIntoView({
-      block: 'center',
-      inline: 'center',
-    })
+    const state = vscode.getState()
+    if (state) {
+      window.scrollTo(state.windowX, state.windowY)
+    } else {
+      // scroll to the root of the tree
+      document.getElementById('node1').scrollIntoView({
+        block: 'center',
+        inline: 'center',
+      })
+    }
   </script>
 </body>
 </html>`;
