@@ -2,7 +2,7 @@
 
 CODEOWNERS Tree is an Visual Studio Code extension designed to simplify the management and visualization of ownership within your codebase. Managing code ownership across various files and directories can be a daunting task, especially in larger teams. With CODEOWNERS Tree, you can easily create and visualize ownership hierarchies in a beautiful tree-like graph, making it effortless to understand who is responsible for what in your codebase.
 
-![Current File](/demo/demo.gif "Codeowners Tree")
+![Current File](/resources/demo.gif "Codeowners Tree")
 
 ## Installation
 

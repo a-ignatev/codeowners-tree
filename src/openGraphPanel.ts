@@ -20,12 +20,16 @@ function addEventHandlers(
   });
 }
 
-export function openGraphPanel(team: string, workspaceRoot: string) {
+export function openGraphPanel(
+  extensionUri: vscode.Uri,
+  team: string,
+  workspaceRoot: string
+) {
   const panel = vscode.window.createWebviewPanel(
     "codeownersTeams.graphPanel",
     team,
     { viewColumn: vscode.ViewColumn.One, preserveFocus: true },
-    { enableScripts: true }
+    { enableScripts: true, localResourceRoots: [extensionUri] }
   );
 
   const webviewHandler = new WebviewHandler(workspaceRoot, panel);
@@ -37,7 +41,12 @@ export function openGraphPanel(team: string, workspaceRoot: string) {
     team,
     addLinks: true,
     onFinish: (data) => {
-      panel.webview.html = getWebviewContent(team, data);
+      panel.webview.html = getWebviewContent(
+        panel.webview,
+        extensionUri,
+        team,
+        data
+      );
     },
   });
 }

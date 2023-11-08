@@ -37,7 +37,7 @@ export async function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      openGraphPanel(team, workspaceRoot);
+      openGraphPanel(context.extensionUri, team, workspaceRoot);
     }
   );
 
