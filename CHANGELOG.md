@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.12](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.11...v0.0.12) (2023-11-10)
+
+
+### Features
+
+* add better zoom logic ([08854bc](https://github.com/a-ignatev/codeowners-tree/commit/08854bc6a55f1513f05ff4b0f2bb086fb8b564ef))
+* add context menu to copy name/path ([99e7bb9](https://github.com/a-ignatev/codeowners-tree/commit/99e7bb9a6b3d0a31506fe0f24bd60f850bec1dcd))
+
 ### [0.0.11](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.10...v0.0.11) (2023-11-08)
 
 ### [0.0.10](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.9...v0.0.10) (2023-11-02)
