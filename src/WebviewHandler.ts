@@ -62,4 +62,8 @@ export class WebviewHandler {
       content: folders.concat(files).join("\n"),
     });
   }
+
+  copyToClipboard(value: string) {
+    vscode.env.clipboard.writeText(value);
+  }
 }

@@ -16,6 +16,10 @@ function addEventHandlers(
       case "getDirectoryListing":
         webviewHandler.listDirectories(message.directory);
         break;
+
+      case "copyToClipboard":
+        webviewHandler.copyToClipboard(message.value);
+        break;
     }
   });
 }

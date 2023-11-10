@@ -1,6 +1,8 @@
 const folderColor = "#ffe9a2";
 const folderTooltipId = "folder-tooltip";
+const contextMenuId = "context-menu";
 const vscode = acquireVsCodeApi();
+let contextMenu = null;
 
 const PADDING_LEFT = 120;
 const PADDING_TOP = 24;
@@ -10,7 +12,7 @@ window.addEventListener("message", (event) => {
   switch (message.command) {
     case "receiveDirectoryListing":
       const tooltip = document.getElementById(folderTooltipId);
-      if (message.content) {
+      if (tooltip && message.content) {
         tooltip.innerHTML = message.content;
       } else {
         tooltip?.remove();
@@ -34,6 +36,57 @@ window.addEventListener("message", (event) => {
     });
   };
 
+  element.oncontextmenu = (event) => {
+    event.preventDefault();
+
+    element.tooltip?.remove();
+    element.tooltip = undefined;
+    contextMenu?.remove();
+
+    const rect = element.getBoundingClientRect();
+    contextMenu = document.createElement("tooltip");
+    contextMenu.id = contextMenuId;
+    contextMenu.style.position = "fixed";
+    contextMenu.style.left = rect.left + "px";
+    contextMenu.style.top = rect.top + 50 + "px";
+    contextMenu.style.backgroundColor = "#eee";
+    contextMenu.style.border = "1px solid black";
+    contextMenu.style.padding = "4px";
+    contextMenu.style.borderRadius = "4px";
+    contextMenu.style.color = "black";
+    contextMenu.style.display = "flex";
+    contextMenu.style.flexDirection = "column";
+
+    const copyPathButton = document.createElement("button");
+    copyPathButton.innerText = "Copy path";
+    copyPathButton.className = "button-4";
+    copyPathButton.onclick = () => {
+      vscode.postMessage({
+        command: "copyToClipboard",
+        value: event.target.parentNode.getAttribute("xlink:href"),
+      });
+      contextMenu?.remove();
+    };
+    contextMenu.appendChild(copyPathButton);
+
+    const copyNameButton = document.createElement("button");
+    copyNameButton.innerText = "Copy name";
+    copyNameButton.className = "button-4";
+    copyNameButton.onclick = () => {
+      vscode.postMessage({
+        command: "copyToClipboard",
+        value: event.target.parentNode
+          .getAttribute("xlink:href")
+          .split("/")
+          .pop(),
+      });
+      contextMenu?.remove();
+    };
+    contextMenu.appendChild(copyNameButton);
+
+    document.body.appendChild(contextMenu);
+  };
+
   if (!isFile) {
     element.getElementsByTagName("text")[0].style.pointerEvents = "none";
 
@@ -45,7 +98,7 @@ window.addEventListener("message", (event) => {
       tooltip.style.position = "fixed";
       tooltip.style.left = rect.left + "px";
       tooltip.style.top = rect.top + 50 + "px";
-      tooltip.style.backgroundColor = folderColor;
+      tooltip.style.backgroundColor = "#eee";
       tooltip.style.border = "1px solid black";
       tooltip.style.padding = "4px";
       tooltip.style.borderRadius = "4px";
@@ -71,9 +124,14 @@ window.addEventListener("message", (event) => {
 // Mouse panning
 let isMouseDown = false;
 
-document.addEventListener("mousedown", () => {
+document.addEventListener("mousedown", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    return;
+  }
+
   document.body.classList.add("grabbed");
   isMouseDown = true;
+  contextMenu?.remove();
 });
 
 document.addEventListener("mouseup", () => {
@@ -125,10 +183,10 @@ function updateScale(diff, centerX, centerY) {
 
 document.addEventListener(
   "wheel",
-  (e) => {
-    e.preventDefault();
+  (event) => {
+    event.preventDefault();
 
-    updateScale(e.deltaY * scale * 0.0005, window.mouseX, window.mouseY);
+    updateScale(event.deltaY * scale * 0.0005, window.mouseX, window.mouseY);
   },
   { passive: false }
 );
