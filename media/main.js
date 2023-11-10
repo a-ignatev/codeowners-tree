@@ -2,6 +2,9 @@ const folderColor = "#ffe9a2";
 const folderTooltipId = "folder-tooltip";
 const vscode = acquireVsCodeApi();
 
+const PADDING_LEFT = 120;
+const PADDING_TOP = 24;
+
 window.addEventListener("message", (event) => {
   const message = event.data;
   switch (message.command) {
@@ -79,6 +82,9 @@ document.addEventListener("mouseup", () => {
 });
 
 document.addEventListener("mousemove", (e) => {
+  window.mouseX = e.clientX;
+  window.mouseY = e.clientY;
+
   if (isMouseDown) {
     window.scrollBy(-e.movementX, -e.movementY);
   }
@@ -99,32 +105,50 @@ let scale = vscode.getState()?.scale || 1;
 svg.setAttribute("transform-origin", "0 0");
 svg.setAttribute("transform", "scale(" + scale + ")");
 
-document.addEventListener("wheel", (e) => {
-  if (e.ctrlKey) {
-    scale -= e.deltaY * scale * 0.0005;
-    scale = Math.max(0.2, Math.min(3, scale));
+function updateScale(diff, centerX, centerY) {
+  const { windowX, windowY } = vscode.getState();
+  const prevScale = scale;
+  scale -= diff;
+  scale = Math.max(0.2, Math.min(3, scale));
+  const ratio = scale / prevScale;
 
-    svg.setAttribute("transform", "scale(" + scale + ")");
-    vscode.setState({ ...(vscode.getState() || {}), scale: scale });
-  }
-});
+  const nmx = (windowX + centerX - PADDING_LEFT) * ratio;
+  const nmy = (windowY + centerY - PADDING_TOP) * ratio;
+  const nwx = nmx - centerX + PADDING_LEFT;
+  const nwy = nmy - centerY + PADDING_TOP;
 
-document.getElementById("zoom-in").addEventListener("click", () => {
-  scale += 0.1;
+  window.scrollBy(nwx - windowX, nwy - windowY);
+
   svg.setAttribute("transform", "scale(" + scale + ")");
   vscode.setState({ ...(vscode.getState() || {}), scale: scale });
+}
+
+document.addEventListener(
+  "wheel",
+  (e) => {
+    e.preventDefault();
+
+    updateScale(e.deltaY * scale * 0.0005, window.mouseX, window.mouseY);
+  },
+  { passive: false }
+);
+
+document.getElementById("zoom-in").addEventListener("click", () => {
+  updateScale(-0.1, window.innerWidth / 2, window.innerHeight / 2);
 });
 
 document.getElementById("zoom-reset").addEventListener("click", () => {
   scale = 1;
   svg.setAttribute("transform", "scale(" + scale + ")");
   vscode.setState({ ...(vscode.getState() || {}), scale: scale });
+  document.getElementById("node1").scrollIntoView({
+    block: "center",
+    inline: "center",
+  });
 });
 
 document.getElementById("zoom-out").addEventListener("click", () => {
-  scale -= 0.1;
-  svg.setAttribute("transform", "scale(" + scale + ")");
-  vscode.setState({ ...(vscode.getState() || {}), scale: scale });
+  updateScale(0.1, window.innerWidth / 2, window.innerHeight / 2);
 });
 
 // Search shortcut

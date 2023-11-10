@@ -38,7 +38,6 @@ export function getWebviewContent(
       <button class="button-4" id="zoom-in">+</button>
       <button class="button-4" id="zoom-reset">O</button>
       <button class="button-4" id="zoom-out">-</button>
-      <span>Ctrl + Wheel</span>
     </div>
     <div>
       <input class="button-4 search-input" placeholder="Search" id="search" />
