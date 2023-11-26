@@ -33,19 +33,27 @@ export function getWebviewContent(
   ${data}
   </div>
 
-  <div class="controls">
-    <div class="buttons">
-      <button class="button-4" id="zoom-in">+</button>
-      <button class="button-4" id="zoom-reset">O</button>
-      <button class="button-4" id="zoom-out">-</button>
-    </div>
+  <div class="search">
     <div>
-      <input class="button-4 search-input" placeholder="Search" id="search" />
+      <input class="button-4 search-input" placeholder="Search (Ctrl+F)" id="search" />
+      <button class="button-4" id="search-prev" title="Previous match">&lt;</button>
+      <button class="button-4" id="search-next" title="Next match">&gt;</button>
+      <button class="button-4" id="copy-results" title="Copy all matches to the clipboard">&#x2398;</button>
     </div>
     <div>
       <span id="matches-count" />
     </div>
   </div>
+
+  <div class="controls">
+    <div class="buttons">
+      <button class="button-4" id="zoom-in" title="Zoom in">+</button>
+      <button class="button-4" id="zoom-reset" title="Reset zoom">O</button>
+      <button class="button-4" id="zoom-out" title="Zoom out">-</button>
+    </div>
+  </div>
+
+  <div id="simpleToast" />
 
   <script nonce="${nonce}" src="${scriptUri}"></script>
 </body>

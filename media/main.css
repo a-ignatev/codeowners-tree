@@ -13,6 +13,17 @@ a {
 
 .controls {
   position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  gap: 4px;
+  padding: 16px;
+  flex-direction: column;
+}
+
+.search {
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 999;
@@ -33,7 +44,7 @@ a {
   stroke-width: 2px;
 }
 
-.controls span {
+#matches-count {
   color: #24292E;
   margin-left: 4px;
 }
@@ -69,7 +80,7 @@ a {
 }
 
 .search-input {
-  cursor: default;
+  cursor: text;
 }
 
 .button-4:hover {
@@ -91,6 +102,10 @@ a {
   transition: none 0s;
 }
 
+.search-input:focus {
+  border-color: black;
+}
+
 .button-4:focus {
   outline: 1px transparent;
 }
@@ -101,4 +116,52 @@ a {
 
 .button-4:-webkit-details-marker {
   display: none;
+}
+
+#simpleToast {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: rgb(19, 148, 73);
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-family: monospace;
+  display: inline-flex;
+  line-hight: 12px
+}
+#simpleToast span {
+  margin-left: 12px;
+  margin-top: 2px;
+}
+
+#simpleToast.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
 }

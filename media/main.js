@@ -7,6 +7,32 @@ let contextMenu = null;
 const PADDING_LEFT = 120;
 const PADDING_TOP = 24;
 
+let toastTimeout = null;
+
+function showToast(element, message) {
+  element.className = "show";
+  element.innerText = message;
+
+  toastTimeout = setTimeout(function () {
+    element.className = element.className.replace("show", "");
+    toastTimeout = null;
+  }, 3000);
+}
+
+function simpleToast(message) {
+  var element = document.getElementById("simpleToast");
+
+  if (toastTimeout) {
+    clearTimeout(toastTimeout);
+    element.className = element.className.replace("show", "");
+    setTimeout(() => {
+      showToast(element, message);
+    }, 0);
+  } else {
+    showToast(element, message);
+  }
+}
+
 window.addEventListener("message", (event) => {
   const message = event.data;
   switch (message.command) {
@@ -66,6 +92,7 @@ window.addEventListener("message", (event) => {
         value: event.target.parentNode.getAttribute("xlink:href"),
       });
       contextMenu?.remove();
+      simpleToast("Path has been copied to clipboard.");
     };
     contextMenu.appendChild(copyPathButton);
 
@@ -81,6 +108,7 @@ window.addEventListener("message", (event) => {
           .pop(),
       });
       contextMenu?.remove();
+      simpleToast("File name has been copied to clipboard.");
     };
     contextMenu.appendChild(copyNameButton);
 
@@ -221,6 +249,35 @@ let found = [];
 let foundIndex = 0;
 let currentHighlight = null;
 
+document.getElementById("search-prev").addEventListener("click", () => {
+  document.getElementById("search").dispatchEvent(
+    new KeyboardEvent("keyup", {
+      key: "Enter",
+      shiftKey: true,
+    })
+  );
+});
+document.getElementById("search-next").addEventListener("click", () => {
+  document.getElementById("search").dispatchEvent(
+    new KeyboardEvent("keyup", {
+      key: "Enter",
+    })
+  );
+});
+document.getElementById("copy-results").addEventListener("click", () => {
+  vscode.postMessage({
+    command: "copyToClipboard",
+    value: found
+      .map((element) => element.getAttribute("xlink:href"))
+      .join("\n"),
+  });
+  simpleToast("Paths have been copied to clipboard.");
+});
+
+document.getElementById("search-prev").style.display = "none";
+document.getElementById("search-next").style.display = "none";
+document.getElementById("copy-results").style.display = "none";
+
 document.getElementById("search").addEventListener("keyup", (e) => {
   if (currentHighlight) {
     currentHighlight
@@ -230,18 +287,13 @@ document.getElementById("search").addEventListener("keyup", (e) => {
       currentHighlight.getElementsByTagName("text")[0].originalText;
   }
 
-  if (e.key === "Enter" && found.length > 1) {
-    if (e.shiftKey) {
-      foundIndex = foundIndex - 1 >= 0 ? foundIndex - 1 : found.length - 1;
-    } else {
-      foundIndex = foundIndex + 1 >= found.length ? 0 : foundIndex + 1;
-    }
-  }
-
   const searchValue = e.target.value;
 
   if (!searchValue) {
     document.getElementById("matches-count").innerText = "";
+    document.getElementById("search-prev").style.display = "none";
+    document.getElementById("search-next").style.display = "none";
+    document.getElementById("copy-results").style.display = "none";
     return;
   }
 
@@ -250,6 +302,26 @@ document.getElementById("search").addEventListener("keyup", (e) => {
       .toLowerCase()
       .includes(searchValue.toLowerCase());
   });
+
+  if (found.length === 0) {
+    document.getElementById("matches-count").innerText = "Nothing found";
+    document.getElementById("search-prev").style.display = "none";
+    document.getElementById("search-next").style.display = "none";
+    document.getElementById("copy-results").style.display = "none";
+    return;
+  }
+
+  document.getElementById("search-prev").style.display = "inline-block";
+  document.getElementById("search-next").style.display = "inline-block";
+  document.getElementById("copy-results").style.display = "inline-block";
+
+  if (e.key === "Enter" && found.length > 1) {
+    if (e.shiftKey) {
+      foundIndex = foundIndex - 1 >= 0 ? foundIndex - 1 : found.length - 1;
+    } else {
+      foundIndex = foundIndex + 1 >= found.length ? 0 : foundIndex + 1;
+    }
+  }
 
   currentHighlight = found[foundIndex];
 
