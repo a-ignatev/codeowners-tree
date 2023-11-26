@@ -4,6 +4,10 @@ CODEOWNERS Tree is an Visual Studio Code extension designed to simplify the mana
 
 ![Current File](/resources/demo.gif "Codeowners Tree")
 
+## Limitations
+
+- Codeowners glob-like file path pattern is not yet supported
+
 ## Installation
 
 Before using CODEOWNERS Tree, you'll need to install the Graphviz application, which is used for rendering the interactive tree-like graph. Follow the steps below to install Graphviz:
