@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.13](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.12...v0.0.13) (2023-11-26)
+
+
+### Features
+
+* quick ux changes ([b7caac9](https://github.com/a-ignatev/codeowners-tree/commit/b7caac9008b533c5793e7fd920a6241854f915d8))
+
 ### [0.0.12](https://github.com/a-ignatev/codeowners-tree/compare/v0.0.11...v0.0.12) (2023-11-10)
 
 
